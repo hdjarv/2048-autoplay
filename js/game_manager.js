@@ -1,16 +1,19 @@
-function GameManager(size, InputManager, Actuator, StorageManager) {
-  this.size           = size; // Size of the grid
-  this.inputManager   = new InputManager;
-  this.storageManager = new StorageManager;
-  this.actuator       = new Actuator;
+function GameManager(size, InputManager, Actuator, StorageManager, AutoplayStrategy) {
+  this.size             = size; // Size of the grid
+  this.inputManager     = new InputManager;
+  this.storageManager   = new StorageManager;
+  this.actuator         = new Actuator;
+  this.autoplayStrategy = new AutoplayStrategy(this);
 
-  this.startTiles     = 2;
+  this.startTiles       = 2;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
   this.setup();
+
+  this.startAutoplay();
 }
 
 // Restart the game
@@ -18,6 +21,7 @@ GameManager.prototype.restart = function () {
   this.storageManager.clearGameState();
   this.actuator.continueGame(); // Clear the game won/lost message
   this.setup();
+  this.startAutoplay();
 };
 
 // Keep playing after winning (allows going over 2048)
@@ -269,4 +273,16 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
+};
+
+GameManager.prototype.startAutoplay = function() {
+  this.autoplayStrategy.reset();
+  this.autoplay();
+};
+
+GameManager.prototype.autoplay = function() {
+  if(!this.isGameTerminated() && this.movesAvailable()) {
+    this.move(this.autoplayStrategy.nextMove());
+    setTimeout(this.autoplay.bind(this), 50);
+  }
 };
