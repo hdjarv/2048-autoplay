@@ -55,7 +55,7 @@ h1.title {
 }
 
 .increase-speed, .decrease-speed {
-  width: 12px;
+  width: 10px;
 }
 
 .score-container, .best-container, .speed-container, .increase-speed, .decrease-speed {
