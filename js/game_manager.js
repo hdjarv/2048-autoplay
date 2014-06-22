@@ -4,12 +4,19 @@ function GameManager(size, InputManager, Actuator, StorageManager, AutoplayStrat
   this.storageManager   = new StorageManager;
   this.actuator         = new Actuator;
   this.autoplayStrategy = new AutoplayStrategy(this);
+  this.autoplaySpeeds   = [{ name: "Slow"   , delay: 500 },
+                           { name: "Normal" , delay: 100 },
+                           { name: "Fast"   , delay: 50 },
+                           { name: "Fastest", delay: 0 }];
+  this.autoplaySpeed    = 1;  // index into array above
 
   this.startTiles       = 2;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+  this.inputManager.on("speedIncrease", this.speedIncrease.bind(this));
+  this.inputManager.on("speedDecrease", this.speedDecrease.bind(this));
 
   this.setup();
 
@@ -275,6 +282,20 @@ GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
 };
 
+GameManager.prototype.speedIncrease = function() {
+  if(this.autoplaySpeed < this.autoplaySpeeds.length -1) {
+    this.autoplaySpeed++;
+    document.getElementsByClassName("speed-container")[0].textContent = this.autoplaySpeeds[this.autoplaySpeed].name;
+  }
+};
+
+GameManager.prototype.speedDecrease = function() {
+  if(this.autoplaySpeed > 0) {
+    this.autoplaySpeed--;
+    document.getElementsByClassName("speed-container")[0].textContent = this.autoplaySpeeds[this.autoplaySpeed].name;
+  }
+};
+
 GameManager.prototype.startAutoplay = function() {
   this.autoplayStrategy.reset();
   this.autoplay();
@@ -283,6 +304,6 @@ GameManager.prototype.startAutoplay = function() {
 GameManager.prototype.autoplay = function() {
   if(!this.isGameTerminated() && this.movesAvailable()) {
     this.move(this.autoplayStrategy.nextMove());
-    setTimeout(this.autoplay.bind(this), 50);
+    setTimeout(this.autoplay.bind(this), this.autoplaySpeeds[this.autoplaySpeed].delay);
   }
 };

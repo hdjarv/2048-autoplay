@@ -41,16 +41,24 @@ h1.title {
 @keyframes move-up {
   0% {
     top: 25px;
-    opacity: 1; }
+    opacity: 1;
+  }
 
   100% {
     top: -50px;
-    opacity: 0; } }
-.scores-container {
-  float: right;
-  text-align: right; }
+    opacity: 0;
+  }
+}
 
-.score-container, .best-container {
+.speed-container {
+  width: 85px;
+}
+
+.increase-speed, .decrease-speed {
+  width: 12px;
+}
+
+.score-container, .best-container, .speed-container, .increase-speed, .decrease-speed {
   position: relative;
   display: inline-block;
   background: #bbada0;
@@ -62,38 +70,47 @@ h1.title {
   border-radius: 3px;
   color: white;
   margin-top: 8px;
-  text-align: center; }
-  .score-container:after, .best-container:after {
-    position: absolute;
-    width: 100%;
-    top: 10px;
-    left: 0;
-    text-transform: uppercase;
-    font-size: 13px;
-    line-height: 13px;
-    text-align: center;
-    color: #eee4da; }
-  .score-container .score-addition, .best-container .score-addition {
-    position: absolute;
-    right: 30px;
-    color: red;
-    font-size: 25px;
-    line-height: 25px;
-    font-weight: bold;
-    color: rgba(119, 110, 101, 0.9);
-    z-index: 100;
-    -webkit-animation: move-up 600ms ease-in;
-    -moz-animation: move-up 600ms ease-in;
-    animation: move-up 600ms ease-in;
-    -webkit-animation-fill-mode: both;
-    -moz-animation-fill-mode: both;
-    animation-fill-mode: both; }
+  text-align: center;
+}
+.score-container:after, .best-container:after, .speed-container:after, .increase-speed:after, .decrease-speed:after {
+  position: absolute;
+  width: 100%;
+  top: 10px;
+  left: 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 13px;
+  text-align: center;
+  color: #eee4da;
+}
+.score-container .score-addition, .best-container .score-addition {
+  position: absolute;
+  right: 30px;
+  color: red;
+  font-size: 25px;
+  line-height: 25px;
+  font-weight: bold;
+  color: rgba(119, 110, 101, 0.9);
+  z-index: 100;
+  -webkit-animation: move-up 600ms ease-in;
+  -moz-animation: move-up 600ms ease-in;
+  animation: move-up 600ms ease-in;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
 
 .score-container:after {
-  content: "Score"; }
+  content: "Score";
+}
 
 .best-container:after {
-  content: "Best"; }
+  content: "Best";
+}
+
+.speed-container:after, .increase-speed:after, .decrease-speed:after {
+  content: "Speed";
+}
 
 p {
   margin-top: 0;
